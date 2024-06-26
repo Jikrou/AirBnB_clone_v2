@@ -2,7 +2,7 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import String, ForeignKey, Integer, Float, Column
-import sqlalchemy
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
@@ -19,3 +19,17 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
+
+    reviews = relationship(
+                    'Review', backref='place', cascade='all, delete-orphan')
+
+    @property
+    def reviews(delf):
+        """ getter attribute that retrun the list of review"""
+        from models import storage
+        from models.review import Review
+        list_rev = []
+        for rev in storage.all(Review).values():
+            if Review.place_id == self.id:
+                list_rew.append(rev)
+        return list_rev
