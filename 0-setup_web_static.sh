@@ -13,7 +13,6 @@ mkdir -p /data/web_static/shared/
 mkdir -p /data/web_static/releases/test/
 #Create a fake HTML file /data/web_static/releases/test/index.html 
 #(with simple content, to test your Nginx configuration)
-touch /data/web_static/releases/test/index.html
 echo " <html>
   <head>
   </head>
@@ -25,10 +24,7 @@ echo " <html>
 #the /data/web_static/releases/test/ folder. If the symbolic link already exists,
 #it should be deleted and recreated every time the script is ran.
 # Remove the existing symbolic link if it exists
-if [ -L /data/web_static/current ]; then
-    rm /data/web_static/current
-fi
-ln -s /data/web_static/releases/test/ /data/web_static/current
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 #Give ownership of the /data/ folder to the ubuntu user AND group 
 #(you can assume this user and group exist). This should be recursive;
 #everything inside should be created/owned by this user/group.
@@ -40,18 +36,26 @@ chown -R ubuntu:ubuntu /data/
 #Use alias inside your Nginx configuration
 
 printf '%s\n' "server {
-	listen 80;
-	server_name onebro.tech;
-	add_header X-Served-By 369852-web-01;
-	root /data/web_static/releases/test;
+	listen 80 default_server;
+	server_name default_server;
+	add_header X-Served-By $HOSTNAME;
+	root /var/www/html;
+	index index.html index.htm;
 
 	location /hbnb_static/ {
 		alias /data/web_static/current/ ;
 		index index.html;
 	}
-	}" > /etc/nginx/sites-available/hbnb_static
-
-sudo ln -sf /etc/nginx/sites-available/hbnb_static /etc/nginx/sites-enabled/
-sudo rm -f /etc/nginx/sites-enabled/default
+	
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+	}
+	
+	error_page 404 /404.html;
+	location /404 {
+		root /var/www/html;
+		internal;
+	}
+	}" > /etc/nginx/sites-available/default
 
 sudo service nginx restart
