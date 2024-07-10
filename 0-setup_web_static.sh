@@ -2,8 +2,8 @@
 
 # a Bash script that sets up your web servers for the deployment of web_static. It must:
 #Install Nginx if it not already installed
-sudo apt-get update -y
-sudo apt-get -y install nginx
+apt-get update -y
+apt-get -y install nginx
 #Create the folder /data/ if it doesn’t already exist
 #Create the folder /data/web_static/ if it doesn’t already exist
 #Create the folder /data/web_static/releases/ if it doesn’t already exist
@@ -58,4 +58,4 @@ printf '%s\n' "server {
 	}
 	}" > /etc/nginx/sites-available/default
 
-sudo service nginx restart
+service nginx restart
