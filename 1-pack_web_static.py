@@ -10,7 +10,7 @@
     The function do_pack must return the archive path if the archive has been
     created correctly generated. Otherwise, it should return None
 """
-from fabric.api import local, lcd
+from fabric.api import local, quiet
 from datetime import datetime
 import os
 
@@ -19,7 +19,8 @@ def do_pack():
     """ generates a .tgz archive from the contents of the web_static folder
     """
     try:
-        local("mkdir -p versions")
+        with quiet():
+            local("mkdir -p versions")
         time_stamp = datetime.now().strftime("%Y%m%d%H%M%S")
         archive_name = "versions/web_static_" + time_stamp + ".tgz"
         print(f"Packing web_static to {archive_name}")
