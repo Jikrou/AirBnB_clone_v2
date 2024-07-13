@@ -36,8 +36,8 @@ def do_deploy(archive_path):
         release_folder = f"/data/web_static/releases/{folder_name}"
 
         # decompressing the archive folder
-        run(f"mkdir -p /data/web_static/releases/{folder_name}/")
-        run(f"tar xzf /tmp/{file_name} -C {release_folder}")
+        run(f"mkdir -p {release_folder}")
+        run(f"tar -xzf /tmp/{file_name} -C {release_folder}")
 
         # deleting the archive from the web server
         sudo(f"rm /tmp/{file_name}")
@@ -47,12 +47,13 @@ def do_deploy(archive_path):
         sudo(f"rm -rf {release_folder}/web_static")
 
         # deleting older symbolic link
-        sudo("rm /data/web_static/current")
+        sudo("rm -rf /data/web_static/current")
 
         # Creating a new symbolic link
         sudo(f"ln -s {release_folder} /data/web_static/current")
 
         sudo("systemctl restart nginx")
+
         return True
 
     except Exception as e:
