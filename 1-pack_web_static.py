@@ -29,4 +29,3 @@ def do_pack():
         print(f"web_static packed: {archive_name} -> {archive_size} bytes")
     except Exception:
         return None
-
