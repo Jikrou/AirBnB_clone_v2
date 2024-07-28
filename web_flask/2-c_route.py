@@ -22,7 +22,7 @@ def hbnb():
 def hello_text(text):
     """ method return the text entered by the user """
     sptext = text.replace('_', ' ')
-    return f"C {escape(sptext)}!"
+    return f"C {escape(sptext)}"
 
 
 if __name__ == '__main__':
