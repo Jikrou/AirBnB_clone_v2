@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" a script that starts a Flask web application """
+"""a script that starts a Flask web application"""
 from flask import Flask, request
 from markupsafe import escape
 
@@ -21,7 +21,7 @@ def hbnb():
 @app.route("/c/<text>", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def hello_text(text):
-    """ method display the texy entered by the user """
+    """ display the text entered ny the user """
     sptext = text.replace('_', ' ')
     if 'c' in request.url:
         return f"C {escape(sptext)}"
@@ -31,7 +31,14 @@ def hello_text(text):
 
 @app.route('/python/', strict_slashes=False)
 def pyool():
+    """ return python is cool"""
     return 'Python is cool'
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    """ method return a number """
+    return f"{escape(n)} is a number"
 
 
 if __name__ == '__main__':

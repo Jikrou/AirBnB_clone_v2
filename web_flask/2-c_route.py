@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ a script that starts a Flask web application """
-from flask import Flask, request
+from flask import Flask
 from markupsafe import escape
 
 app = Flask(__name__)
@@ -8,30 +8,21 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello():
-    """ display hello hbnb"""
+    """ method display hello HBNB"""
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """ display hbnb """
+    """ method display hbnb"""
     return 'HBNB'
 
 
 @app.route("/c/<text>", strict_slashes=False)
-@app.route("/python/<text>", strict_slashes=False)
 def hello_text(text):
-    """ method display the texy entered by the user """
+    """ method return the text entered by the user """
     sptext = text.replace('_', ' ')
-    if 'c' in request.url:
-        return f"C {escape(sptext)}"
-    elif 'python' in request.url:
-        return f"Python {escape(sptext)}"
-
-
-@app.route('/python/', strict_slashes=False)
-def pyool():
-    return 'Python is cool'
+    return f"C {escape(sptext)}!"
 
 
 if __name__ == '__main__':
