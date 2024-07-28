@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+""" a script that starts a Flask web application """
+
+from flask import Flask, render_template
+from models import storage
+from models.state import State
+
+app = Flask(__name__)
+
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    """Close the database at the end of the request."""
+    storage.close()
+
+
+@app.route('/states_list', strict_slashes=False)
+def statefunc():
+    """method that display html page contains list of states """
+    states = storage.all(State).values()
+    sol = sorted(states, key=lambda x: x.name)
+    return render_template('7-states_list.html', states=sol)
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
